@@ -44,7 +44,8 @@ enum
 	BF_ArcMain_Miss1, //Up Right
 	BF_ArcMain_Peace,
 	BF_ArcMain_Dead0, //BREAK
-	
+	BF_ArcMain_Idle1,
+
 	BF_ArcMain_Max,
 };
 
@@ -91,7 +92,7 @@ static const CharFrame char_bf_frame[] = {
 	{BF_ArcMain_Miss0, {128,   0, 128, 128}, { 53, 102}}, //7 left miss 2
 	
 	{BF_ArcMain_Hit0,  {  0, 128, 128, 128}, { 50,  82}}, //8 down 1
-	{BF_ArcMain_Hit0,  {128, 128, 128, 128}, { 50,  83}}, //9 down 2
+	{BF_ArcMain_Hit0,  {128, 128, 128, 128}, { 50,  90}}, //9 down 2
 	{BF_ArcMain_Miss0, {  0, 128, 128, 128}, { 49,  90}}, //10 down miss 1
 	{BF_ArcMain_Miss0, {128, 128, 128, 128}, { 50,  90}}, //11 down miss 2
 	
@@ -123,10 +124,15 @@ static const CharFrame char_bf_frame[] = {
 	{BF_ArcDead_Dead2, {128,   0, 128, 128}, { 53,  98}}, //32 dead2 body twitch 1
 	{BF_ArcDead_Dead2, {  0, 128, 128, 128}, { 53,  98}}, //33 dead2 balls twitch 0
 	{BF_ArcDead_Dead2, {128, 128, 128, 128}, { 53,  98}}, //34 dead2 balls twitch 1
+
+	{BF_ArcMain_Idle1, {  0,   0, 128, 128}, { 53,  96}}, //0 idle 1
+	{BF_ArcMain_Idle1, {128,   0, 128, 128}, { 53,  96}}, //1 idle 2 
+	{BF_ArcMain_Idle1, {  0, 128, 128, 128}, { 53,  98}}, //2 idle 3
+	{BF_ArcMain_Idle1, {128, 128, 128, 128}, { 53,  98}}, //3 idle 4
 };
 
 static const Animation char_bf_anim[PlayerAnim_Max] = {
-	{2, (const u8[]){ 0,  1,  2,  2,  3, ASCR_BACK, 1}}, //CharAnim_Idle
+	{2, (const u8[]){ 0,  1,  2,  2,  3,  35,  36,  37,  38, ASCR_BACK, 1}}, //CharAnim_Idle
 	{2, (const u8[]){ 4,  5, ASCR_BACK, 1}},             //CharAnim_Left
 	{1, (const u8[]){ 4,  6,  6,  7, ASCR_BACK, 1}},     //CharAnim_LeftAlt
 	{2, (const u8[]){ 8,  9, ASCR_BACK, 1}},             //CharAnim_Down
@@ -190,25 +196,33 @@ void Char_BF_Tick(Character *character)
 		     character->animatable.anim != CharAnim_RightAlt) &&
 			(stage.song_step & 0x7) == 0)
 			character->set_anim(character, CharAnim_Idle);
-		
-		//Stage specific animations
-		if (stage.note_scroll >= 0)
-		{
-			switch (stage.stage_id)
-			{
-				case StageId_1_4: //Tutorial peace
-					if (stage.song_step > 64 && stage.song_step < 192 && (stage.song_step & 0x3F) == 60)
-						character->set_anim(character, PlayerAnim_Peace);
-					break;
-				case StageId_1_1: //Bopeebo peace
-					if ((stage.song_step & 0x1F) == 28)
-						character->set_anim(character, PlayerAnim_Peace);
-					break;
-				default:
-					break;
-			}
-		}
 	}
+
+	    if (stage.song_step == 401)
+	 {
+		this->character.focus_x = FIXED_DEC(0,1);
+		this->character.focus_y = FIXED_DEC(-90,1);	
+		this->character.focus_zoom = FIXED_DEC(2,1);
+	}
+	else if (stage.song_step == 405)
+	 {
+		this->character.focus_x = FIXED_DEC(0,1);
+		this->character.focus_y = FIXED_DEC(-90,1);	
+		this->character.focus_zoom = FIXED_DEC(2,1);
+	}
+	else if (stage.song_step == 409)
+	 {
+		this->character.focus_x = FIXED_DEC(0,1);
+		this->character.focus_y = FIXED_DEC(-90,1);	
+		this->character.focus_zoom = FIXED_DEC(2,1);
+	}
+
+	else
+  {
+	this->character.focus_x = FIXED_DEC(-45,1);
+	this->character.focus_y = FIXED_DEC(-80,1);
+	this->character.focus_zoom = FIXED_DEC(1,1);
+  }
 	
 	//Retry screen
 	if (character->animatable.anim >= PlayerAnim_Dead3)
@@ -389,8 +403,8 @@ Character *Char_BF_New(fixed_t x, fixed_t y)
 	
 	this->character.health_i = 0;
 	
-	this->character.focus_x = FIXED_DEC(-50,1);
-	this->character.focus_y = FIXED_DEC(-65,1);
+	this->character.focus_x = FIXED_DEC(-45,1);
+	this->character.focus_y = FIXED_DEC(-80,1);
 	this->character.focus_zoom = FIXED_DEC(1,1);
 	
 	//Load art
@@ -406,6 +420,7 @@ Character *Char_BF_New(fixed_t x, fixed_t y)
 		"miss1.tim", //BF_ArcMain_Miss1
 		"peace.tim", //BF_ArcMain_Peace
 		"dead0.tim", //BF_ArcMain_Dead0
+		"idle1.tim",  //BF_ArcMain_Idle
 		NULL
 	};
 	IO_Data *arc_ptr = this->arc_ptr;

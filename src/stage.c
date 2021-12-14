@@ -23,7 +23,7 @@
 #include "object/splash.h"
 
 //Stage constants
-//#define STAGE_PERFECT //Play all notes perfectly
+#define STAGE_PERFECT //Play all notes perfectly
 //#define STAGE_NOHUD //Disable the HUD
 
 //#define STAGE_FREECAM //Freecam
@@ -45,25 +45,10 @@ static const u16 note_key[] = {INPUT_LEFT, INPUT_DOWN, INPUT_UP, INPUT_RIGHT};
 
 //Stage definitions
 #include "character/bf.h"
-#include "character/bfweeb.h"
-#include "character/dad.h"
-#include "character/spook.h"
-#include "character/pico.h"
-#include "character/mom.h"
 #include "character/xmasp.h"
-#include "character/senpai.h"
-#include "character/senpaim.h"
-#include "character/tank.h"
 #include "character/gf.h"
-#include "character/clucky.h"
 
-#include "stage/dummy.h"
-#include "stage/week1.h"
-#include "stage/week2.h"
-#include "stage/week3.h"
 #include "stage/week4.h"
-#include "stage/week5.h"
-#include "stage/week7.h"
 
 static const StageDef stage_defs[StageId_Max] = {
 	#include "stagedef_disc1.h"
@@ -274,12 +259,7 @@ static u8 Stage_HitNote(PlayerState *this, u8 type, fixed_t offset)
 static void Stage_MissNote(PlayerState *this)
 {
 	if (this->combo)
-	{
-		//Kill combo
-		if (this->combo > 5)
-			stage.gf->set_anim(stage.gf, CharAnim_Down); //Cry if we lost a large combo
-		this->combo = 0;
-		
+	{	
 		//Create combo object telling of our lost combo
 		Obj_Combo *combo = Obj_Combo_New(
 			this->character->focus_x,
@@ -652,21 +632,21 @@ static void Stage_DrawHealth(s16 health, u8 i, s8 ox)
 	//Check if we should use 'dying' frame
 	s8 dying;
 	if (ox < 0)
-		dying = (health >= 18000) * 24;
+		dying = (health >= 18000) * 34;
 	else
-		dying = (health <= 2000) * 24;
+		dying = (health <= 2000) * 34;
 	
 	//Get src and dst
 	fixed_t hx = (128 << FIXED_SHIFT) * (10000 - health) / 10000;
 	RECT src = {
-		(i % 5) * 48 + dying,
-		16 + (i / 5) * 24,
-		24,
-		24
+		(i % 3) * 68 + dying,
+		16 + (i / 3) * 34,
+		34,
+		34
 	};
 	RECT_FIXED dst = {
-		hx + ox * FIXED_DEC(11,1) - FIXED_DEC(12,1),
-		FIXED_DEC(SCREEN_HEIGHT2 - 32 + 4 - 12, 1),
+		hx + ox * FIXED_DEC(18,1) - FIXED_DEC(17,1),
+		FIXED_DEC(SCREEN_HEIGHT2 - 32 + 4 - 17, 1),
 		src.w << FIXED_SHIFT,
 		src.h << FIXED_SHIFT
 	};

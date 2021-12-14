@@ -530,7 +530,7 @@ void Menu_Tick(void)
 			static const char *menu_options[] = {
 				"STORY MODE",
 				"FREEPLAY",
-				"MODS",
+				"CREDITS",
 				"OPTIONS",
 				#ifdef PSXF_NETWORK
 					"JOIN SERVER",
@@ -668,16 +668,9 @@ void Menu_Tick(void)
 				const char *week;
 				StageId stage;
 				const char *name;
-				const char *tracks[3];
+				const char *tracks[1];
 			} menu_options[] = {
-				{NULL, StageId_1_4, "TUTORIAL", {"TUTORIAL", NULL, NULL}},
-				{"1", StageId_1_1, "DADDY DEAREST", {"BOPEEBO", "FRESH", "DADBATTLE"}},
-				{"2", StageId_2_1, "SPOOKY MONTH", {"SPOOKEEZ", "SOUTH", "MONSTER"}},
-				{"3", StageId_3_1, "PICO", {"PICO", "PHILLY NICE", "BLAMMED"}},
-				{"4", StageId_4_1, "MOMMY MUST MURDER", {"SATIN PANTIES", "HIGH", "MILF"}},
-				{"5", StageId_5_1, "RED SNOW", {"COCOA", "EGGNOG", "WINTER HORRORLAND"}},
-				{"6", StageId_6_1, "HATING SIMULATOR", {"SENPAI", "ROSES", "THORNS"}},
-				{"7", StageId_7_1, "TANKMAN", {"UGH", "GUNS", "STRESS"}},
+				{NULL, StageId_1_1, "SAVING THE OCEAN", {"BEASTFUNKIN"}},
 			};
 			
 			//Initialize page
@@ -800,28 +793,7 @@ void Menu_Tick(void)
 				const char *text;
 			} menu_options[] = {
 				//{StageId_4_4, "TEST"},
-				{StageId_1_4, "TUTORIAL"},
-				{StageId_1_1, "BOPEEBO"},
-				{StageId_1_2, "FRESH"},
-				{StageId_1_3, "DADBATTLE"},
-				{StageId_2_1, "SPOOKEEZ"},
-				{StageId_2_2, "SOUTH"},
-				{StageId_2_3, "MONSTER"},
-				{StageId_3_1, "PICO"},
-				{StageId_3_2, "PHILLY NICE"},
-				{StageId_3_3, "BLAMMED"},
-				{StageId_4_1, "SATIN PANTIES"},
-				{StageId_4_2, "HIGH"},
-				{StageId_4_3, "MILF"},
-				{StageId_5_1, "COCOA"},
-				{StageId_5_2, "EGGNOG"},
-				{StageId_5_3, "WINTER HORRORLAND"},
-				{StageId_6_1, "SENPAI"},
-				{StageId_6_2, "ROSES"},
-				{StageId_6_3, "THORNS"},
-				{StageId_7_1, "UGH"},
-				{StageId_7_2, "GUNS"},
-				{StageId_7_3, "STRESS"},
+				{StageId_1_1, "BEASTFUNKIN"},
 			};
 			
 			//Initialize page
@@ -918,10 +890,30 @@ void Menu_Tick(void)
 				const char *text;
 				boolean difficulty;
 			} menu_options[] = {
-				{StageId_Kapi_1, "VS KAPI", false},
-				{StageId_Clwn_1, "VS TRICKY", true},
-				{StageId_Clwn_4, "   EXPURGATION", false},
-				{StageId_2_4,    "CLUCKED", false},
+				{StageId_Clwn_2, "		OG TEAMSEAS MOD", false},
+                {StageId_Clwn_2, "SERKOID", false},
+				{StageId_Clwn_2, "SPB", false},
+				{StageId_Clwn_2, "SENSISGONE", false},
+				{StageId_Clwn_2, "PEBLIN", false},
+				{StageId_Clwn_2, "VALMONATOR", false},
+				{StageId_Clwn_2, "REDTOONS", false},
+				{StageId_Clwn_2, "SEREBEAT", false},
+				{StageId_Clwn_2, "MADEOUS", false},
+				{StageId_Clwn_2, "BLANTADOS", false},
+                {StageId_Kapi_1, "		PORT PROGRAMMING", false},
+                {StageId_Kapi_2, "UNSTOPABLE", false},
+				{StageId_Kapi_1, "		FIXING THE CHART", false},
+				{StageId_Kapi_2, "IGORSOU", false},
+                {StageId_Clwn_2, "		PLAYTESTING", false},
+                {StageId_Clwn_2, "MR P", false},
+                {StageId_Clwn_1, "		MENUS", false},
+                {StageId_Clwn_2, "UNSTOPABLE", false},
+                {StageId_Clwn_2, "MR P", false},
+                {StageId_Clwn_1, "		FNF PSX PORT", false},
+                {StageId_Kapi_2, "CUCKYDEV", false},
+                {StageId_Clwn_1, "		SPRITES AND IMAGES", false},
+                {StageId_Clwn_1, "MR P", false},
+                {StageId_Clwn_1, "UNSTOPABLE", false},
 			};
 			
 			//Initialize page
@@ -933,7 +925,7 @@ void Menu_Tick(void)
 			
 			//Draw page label
 			menu.font_bold.draw(&menu.font_bold,
-				"MODS",
+				"CREDITS",
 				16,
 				SCREEN_HEIGHT - 32,
 				FontAlign_Left
@@ -962,17 +954,7 @@ void Menu_Tick(void)
 						menu.select = 0;
 				}
 				
-				//Select option if cross is pressed
-				if (pad_state.press & (PAD_START | PAD_CROSS))
-				{
-					menu.next_page = MenuPage_Stage;
-					menu.page_param.stage.id = menu_options[menu.select].stage;
-					menu.page_param.stage.story = true;
-					if (!menu_options[menu.select].difficulty)
-						menu.page_param.stage.diff = StageDiff_Hard;
-					Trans_Start();
-				}
-				
+
 				//Return to main menu if circle is pressed
 				if (pad_state.press & PAD_CIRCLE)
 				{

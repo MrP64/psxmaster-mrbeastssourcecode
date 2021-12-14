@@ -53,10 +53,10 @@ typedef struct
 
 //Christmas Parents definitions
 static const CharFrame char_xmasp_frame[] = {
-	{XmasP_ArcMain_Idle0, {0,   0, 214, 190}, {130, 182}}, //0 idle 1
-	{XmasP_ArcMain_Idle1, {0,   0, 214, 190}, {130, 182}}, //1 idle 2
-	{XmasP_ArcMain_Idle2, {0,   0, 214, 190}, {130, 182}}, //2 idle 3
-	{XmasP_ArcMain_Idle3, {0,   0, 214, 190}, {130, 182}}, //3 idle 4
+	{XmasP_ArcMain_Idle0, {0,   0, 214, 210}, {130, 182}}, //0 idle 1
+	{XmasP_ArcMain_Idle1, {0,   0, 214, 210}, {130, 182}}, //1 idle 2
+	{XmasP_ArcMain_Idle2, {0,   0, 214, 210}, {130, 182}}, //2 idle 3
+	{XmasP_ArcMain_Idle3, {0,   0, 214, 210}, {130, 182}}, //3 idle 4
 	
 	{XmasP_ArcMain_LeftA0, {0,   0, 214, 210}, {130, 182}}, //4 left a 1
 	{XmasP_ArcMain_LeftA1, {0,   0, 214, 210}, {130, 182}}, //5 left a 2
@@ -68,13 +68,13 @@ static const CharFrame char_xmasp_frame[] = {
 	{XmasP_ArcMain_DownB0, {0,   0, 110, 142}, {130, 182}}, //10 down b 1
 	{XmasP_ArcMain_DownB1, {0,   0, 110, 142}, {130, 182}}, //11 down b 2
 
-	{XmasP_ArcMain_UpA0, {0,   0, 214, 190}, {130, 182}}, //12 up a 1
-	{XmasP_ArcMain_UpA1, {0,   0, 214, 190}, {130, 182}}, //13 up a 2
+	{XmasP_ArcMain_UpA0, {0,   0, 214, 210}, {130, 182}}, //12 up a 1
+	{XmasP_ArcMain_UpA1, {0,   0, 214, 210}, {130, 182}}, //13 up a 2
 	{XmasP_ArcMain_UpB0, {0,   0, 110, 142}, {130, 182}}, //14 up b 1
 	{XmasP_ArcMain_UpB1, {0,   0, 110, 142}, {130, 182}}, //15 up b 2
 	
-	{XmasP_ArcMain_RightA0, {0,   0, 214, 190}, {130, 182}}, //16 right a 1
-	{XmasP_ArcMain_RightA1, {0,   0, 214, 190}, {130, 182}}, //17 right a 2
+	{XmasP_ArcMain_RightA0, {0,   0, 214, 210}, {130, 182}}, //16 right a 1
+	{XmasP_ArcMain_RightA1, {0,   0, 214, 210}, {130, 182}}, //17 right a 2
 	{XmasP_ArcMain_RightB0, {0,   0, 110, 142}, {130, 182}}, //18 right b 1
 	{XmasP_ArcMain_RightB1, {0,   0, 110, 142}, {130, 182}}, //19 right b 2
 };
@@ -113,7 +113,19 @@ void Char_XmasP_Tick(Character *character)
 	//Perform idle dance
 	if ((character->pad_held & (INPUT_LEFT | INPUT_DOWN | INPUT_UP | INPUT_RIGHT)) == 0)
 		Character_PerformIdle(character);
-	
+
+	if (stage.song_step == 392) {
+		this->character.focus_x = FIXED_DEC(0,1);
+		this->character.focus_y = FIXED_DEC(-90,1);	
+		this->character.focus_zoom = FIXED_DEC(2,1);
+	}
+	else
+	{
+	this->character.focus_x = FIXED_DEC(25,1);
+	this->character.focus_y = FIXED_DEC(-90,1);
+	this->character.focus_zoom = FIXED_DEC(1,1);
+	}
+
 	//Animate and draw
 	Animatable_Animate(&character->animatable, (void*)this, Char_XmasP_SetFrame);
 	Character_Draw(character, &this->tex, &char_xmasp_frame[this->frame]);
@@ -156,12 +168,14 @@ Character *Char_XmasP_New(fixed_t x, fixed_t y)
 	//Set character information
 	this->character.spec = 0;
 	
-	this->character.health_i = 5;
+	this->character.health_i = 1;
 	
 	this->character.focus_x = FIXED_DEC(25,1);
-	this->character.focus_y = FIXED_DEC(-100,1);
+	this->character.focus_y = FIXED_DEC(-90,1);
 	this->character.focus_zoom = FIXED_DEC(1,1);
 	
+
+
 	//Load art
 	this->arc_main = IO_Read("\\CHAR\\XMASP.ARC;1");
 	
